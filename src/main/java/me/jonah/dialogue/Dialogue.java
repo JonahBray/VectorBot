@@ -11,4 +11,6 @@ public interface Dialogue {
     int getQuestionID();
 
     String getCancelWord();
+
+    String getUserID();
 }
