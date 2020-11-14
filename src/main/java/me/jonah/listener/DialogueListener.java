@@ -20,10 +20,14 @@ public class DialogueListener extends ListenerAdapter {
             // when you call hasKey, and then you get it again.
             Dialogue dialogue = VectorBot.getDialogueManager().getUserDialogueMap().get(event.getAuthor().getId());
             if (dialogue != null) {
-                 // Map has a dialogue of this user.
+                // Map has a dialogue of this user.
+                if (dialogue.getCancelWord().equals(dialogue.getCancelWord())) {
+                    VectorBot.getDialogueManager().getUserDialogueMap().remove(event.getAuthor().getId());
+                    event.getChannel().sendMessage("Cancelled action.").queue();
+                }
                 Question<?> question = dialogue.getCurrentQuestion(dialogue.getQuestionID());
                 QuestionEvent<?> questionEvent = new QuestionEvent<>(event, event.getMessage().getContentRaw(), question);
-                if(question.isValid(questionEvent))
+                if (question.isValid(questionEvent))
                     question.getSuccess(questionEvent);
                 else question.getFailure(questionEvent);
             }
