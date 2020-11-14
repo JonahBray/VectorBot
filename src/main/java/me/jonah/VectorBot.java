@@ -70,8 +70,9 @@ public class VectorBot {
                         .setAutoReconnect(true)
                         .setMemberCachePolicy(MemberCachePolicy.ONLINE)
                         .enableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MEMBERS)
-                        .addEventListeners(builder)
-                        .addEventListeners(new JoinListener(), new DialogueListener())
+                        .addEventListeners(builder.build())
+                        .addEventListeners(new JoinListener(),
+                                new DialogueListener())
                         .build();
                 successful = true;
             } catch (LoginException e) {

@@ -64,8 +64,15 @@ public class AnnouncementDialogue implements Dialogue {
             // it will send the announcement.
             stringQuestionEvent.getQuestion().setAnswer(stringQuestionEvent.getEvent().getJDA().getTextChannelById(stringQuestionEvent.getValue()));
             sendAnnouncement();
+            VectorBot.getDialogueManager().getUserDialogueMap().remove(userID);
         }, stringQuestionEvent -> stringQuestionEvent.getEvent().getChannel().sendMessage("That is not a valid channel! Try again!").queue(),
-                "What do you wish for the channel to be sent in (ID)?", stringQuestionEvent -> stringQuestionEvent.getEvent().getJDA().getTextChannelById(stringQuestionEvent.getValue()) != null, this);
+                "What do you wish for the channel to be sent in (ID)?", stringQuestionEvent -> {
+            try {
+                return stringQuestionEvent.getEvent().getJDA().getTextChannelById(stringQuestionEvent.getValue()) != null;
+            } catch (Exception e) {
+                return false;
+            }
+        }, this);
         this.userID = userID;
         // For clarification, we start at -1, so when someone does the command for the first time, it gets the first question instead of the second.
         this.questionID = -1;
