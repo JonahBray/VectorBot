@@ -2,6 +2,9 @@ package me.jonah.dialogue.questions;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
+/**
+ * @author Jonah Bray
+ */
 public class QuestionEvent<T> {
     private final GuildMessageReceivedEvent event;
     private final String value;

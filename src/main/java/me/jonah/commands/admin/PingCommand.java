@@ -7,6 +7,9 @@ import net.dv8tion.jda.api.entities.ChannelType;
 
 import java.time.temporal.ChronoUnit;
 
+/**
+ * @author Jonah Bray
+ */
 public class PingCommand extends Command {
     public PingCommand(Category category) {
         this.category = category;

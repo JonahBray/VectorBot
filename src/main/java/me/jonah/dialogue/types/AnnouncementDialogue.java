@@ -9,6 +9,9 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
+/**
+ * @author Jonah Bray
+ */
 public class AnnouncementDialogue implements Dialogue {
     protected final Question<java.awt.Color> embedColor;
     protected final Question<String> authorString;
@@ -57,14 +60,15 @@ public class AnnouncementDialogue implements Dialogue {
         }, stringQuestionEvent -> stringQuestionEvent.getEvent().getChannel().sendMessage("That is not a valid string! Try again!").queue(),
                 "What do you wish for the description field to be?", stringQuestionEvent -> true, this);
         channelString = new Question<>(stringQuestionEvent -> {
+            // For clarification, channelString is the last question in the list of questions, as such once it's completed,
+            // it will send the announcement.
             stringQuestionEvent.getQuestion().setAnswer(stringQuestionEvent.getEvent().getJDA().getTextChannelById(stringQuestionEvent.getValue()));
-            stringQuestionEvent.getEvent().getChannel().sendMessage(
-                    stringQuestionEvent.getQuestion().getDialogue().getNextQuestion()
-            ).queue();
+            sendAnnouncement();
         }, stringQuestionEvent -> stringQuestionEvent.getEvent().getChannel().sendMessage("That is not a valid channel! Try again!").queue(),
                 "What do you wish for the channel to be sent in (ID)?", stringQuestionEvent -> stringQuestionEvent.getEvent().getJDA().getTextChannelById(stringQuestionEvent.getValue()) != null, this);
         this.userID = userID;
-        this.questionID = 0;
+        // For clarification, we start at -1, so when someone does the command for the first time, it gets the first question instead of the second.
+        this.questionID = -1;
         this.cancelWord = "cancel";
     }
 

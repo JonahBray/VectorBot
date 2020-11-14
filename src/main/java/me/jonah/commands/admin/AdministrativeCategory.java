@@ -12,6 +12,9 @@ import net.dv8tion.jda.api.entities.Role;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * @author jonahbray
+ */
 public class AdministrativeCategory extends Command.Category {
     public AdministrativeCategory(String noPermission) {
         super("Administrative", noPermission, createPredicate());

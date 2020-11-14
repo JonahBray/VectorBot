@@ -5,6 +5,9 @@ import me.jonah.dialogue.Dialogue;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+/**
+ * @author Jonah Bray
+ */
 public class Question<T> {
     protected final Consumer<QuestionEvent<T>> success, failure;
     protected final String question;
@@ -20,20 +23,20 @@ public class Question<T> {
         this.dialogue = dialogue;
     }
 
-    public Consumer<QuestionEvent<T>> getSuccess() {
-        return success;
+    public void getSuccess(QuestionEvent<?> event) {
+        success.accept((QuestionEvent<T>) event);
     }
 
-    public Consumer<QuestionEvent<T>> getFailure() {
-        return failure;
+    public void getFailure(QuestionEvent<?> event) {
+        failure.accept((QuestionEvent<T>) event);
     }
 
     public String getQuestion() {
         return question;
     }
 
-    public boolean isValid(QuestionEvent<T> event) {
-        return isValid.test(event);
+    public boolean isValid(QuestionEvent<?> event) {
+        return isValid.test((QuestionEvent<T>) event);
     }
 
     public Dialogue getDialogue() {

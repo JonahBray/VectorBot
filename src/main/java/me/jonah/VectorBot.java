@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import me.jonah.commands.admin.*;
 import me.jonah.configuration.BotSettings;
+import me.jonah.dialogue.DialogueManager;
 import me.jonah.lib.config.Config;
 import me.jonah.lib.config.ConfigManager;
 import me.jonah.listener.DialogueListener;
@@ -19,22 +20,28 @@ import javax.security.auth.login.LoginException;
 import java.util.Scanner;
 
 /**
- * @author  Jonah Bray
+ * @author Jonah Bray
  */
 public class VectorBot {
     private static final Gson gson = new Gson();
     private static JDA jda;
     private static ConfigManager configManager;
     private static Config<BotSettings> botConfig;
+    private static DialogueManager dialogueManager;
 
     public static Gson getGson() {
         return gson;
     }
 
 
+    public static DialogueManager getDialogueManager() {
+        return dialogueManager;
+    }
+
     public static void main(String[] args) throws InterruptedException {
         configManager = new ConfigManager();
         botConfig = configManager.loadConfig("/data/settings", new BotSettings());
+        dialogueManager = new DialogueManager();
 
         CommandClientBuilder builder = new CommandClientBuilder();
 

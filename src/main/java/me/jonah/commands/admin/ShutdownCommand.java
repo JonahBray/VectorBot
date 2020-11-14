@@ -4,6 +4,9 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import me.jonah.VectorBot;
 
+/**
+ * @author Jonah Bray
+ */
 public class ShutdownCommand extends Command {
 
     public ShutdownCommand(Category category) {

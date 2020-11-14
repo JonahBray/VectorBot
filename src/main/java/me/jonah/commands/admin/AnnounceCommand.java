@@ -3,8 +3,11 @@ package me.jonah.commands.admin;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import me.jonah.VectorBot;
-import net.dv8tion.jda.api.EmbedBuilder;
+import me.jonah.dialogue.types.AnnouncementDialogue;
 
+/**
+ * @author Jonah Bray
+ */
 public class AnnounceCommand extends Command {
     public AnnounceCommand(Category category) {
         this.category = category;
@@ -16,14 +19,9 @@ public class AnnounceCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         if (event.getGuild().getId().equals(VectorBot.getBotConfig().getConfiguration().guildID)) {
-//            event.reply(new EmbedBuilder()
-//                    .setTitle("Color")
-//                    .setAuthor("Announcement Creator",
-//                            VectorBot.getBotConfig().getConfiguration().discordInvite,
-//                            event.getGuild().getIconUrl())
-//                    .setFooter("VectorBot")
-//                    .setDescription("Please pick a color")
-//                    .build());
+            AnnouncementDialogue dialogue = new AnnouncementDialogue(event.getMember().getUser().getId());
+            VectorBot.getDialogueManager().addDialogue(dialogue);
+            event.reply(dialogue.getNextQuestion());
 
         } else event.replyError("You must use this command in Vector's dicsord server!");
     }
