@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public interface Dialogue {
     MessageEmbed getNextQuestion();
 
-    <T> Question<T> getCurrentQuestion(int questionID);
+    Question<?> getCurrentQuestion(int questionID);
 
     int getQuestionID();
 

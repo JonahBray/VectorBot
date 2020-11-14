@@ -1,10 +1,13 @@
 package me.jonah.dialogue.types;
 
+import me.jonah.VectorBot;
 import me.jonah.dialogue.Dialogue;
 import me.jonah.dialogue.questions.Question;
 import me.jonah.lib.util.Color;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 
 public class AnnouncementDialogue implements Dialogue {
     protected final Question<java.awt.Color> embedColor;
@@ -13,8 +16,8 @@ public class AnnouncementDialogue implements Dialogue {
     protected final Question<String> descriptionString;
     protected final Question<TextChannel> channelString;
     protected final String userID;
-    protected final int questionID;
     protected final String cancelWord;
+    protected int questionID;
 
     public AnnouncementDialogue(final String userID) {
         embedColor = new Question<>(colorQuestionEvent -> {
@@ -77,6 +80,10 @@ public class AnnouncementDialogue implements Dialogue {
         return authorString.getAnswer();
     }
 
+    public TextChannel getChannelString() {
+        return channelString.getAnswer();
+    }
+
     public String getUserID() {
         return userID;
     }
@@ -90,14 +97,47 @@ public class AnnouncementDialogue implements Dialogue {
     }
 
     public MessageEmbed getNextQuestion() {
-        return null;
+        questionID++;
+        return new EmbedBuilder()
+                .setAuthor("Announcement Creator")
+                .setTitle(getCurrentQuestion(questionID).getQuestion())
+                .build();
     }
 
-    public <T> Question<T> getCurrentQuestion(int questionID) {
+    public Question<?> getCurrentQuestion(int questionID) {
+        switch (questionID) {
+            case 0:
+                return embedColor;
+            case 1:
+                return authorString;
+
+            case 2:
+                return titleString;
+
+            case 3:
+                return descriptionString;
+
+            case 4:
+                return channelString;
+
+        }
         return null;
     }
 
     public int getQuestionID() {
         return questionID;
+    }
+
+    public void sendAnnouncement() {
+        User user = VectorBot.getJda().getUserById(userID);
+        MessageEmbed embed = new EmbedBuilder()
+                .setTitle(getTitleString())
+                .setColor(getEmbedColor())
+                .setDescription(getDescriptionString())
+                .setAuthor(getAuthorString(), VectorBot.getBotConfig().getConfiguration().discordInvite,
+                        VectorBot.getJda().getSelfUser().getEffectiveAvatarUrl())
+                .setFooter(user != null ? "Sent by " + user.getName() + "#" + user.getDiscriminator() : "VectorBot")
+                .build();
+        getChannelString().sendMessage(embed).queue();
     }
 }

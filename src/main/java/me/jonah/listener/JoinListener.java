@@ -12,7 +12,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 
-@Author("Jonah Bray")
+/**
+ * @author  Jonah Bray
+ */
 public class JoinListener extends ListenerAdapter {
     // Event is fired whenever a member joins a guild we're in.
     @Override

@@ -3,7 +3,6 @@ package me.jonah;
 import com.google.gson.Gson;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
-import com.jagrosh.jdautilities.examples.doc.Author;
 import me.jonah.commands.admin.*;
 import me.jonah.configuration.BotSettings;
 import me.jonah.lib.config.Config;
@@ -19,7 +18,9 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import javax.security.auth.login.LoginException;
 import java.util.Scanner;
 
-@Author("Jonah Bray")
+/**
+ * @author  Jonah Bray
+ */
 public class VectorBot {
     private static final Gson gson = new Gson();
     private static JDA jda;
