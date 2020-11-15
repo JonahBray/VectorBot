@@ -1,4 +1,4 @@
-package me.jonah.dialogue.types;
+package me.jonah.commands.admin.announce;
 
 import me.jonah.VectorBot;
 import me.jonah.dialogue.Dialogue;
@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.User;
 /**
  * @author Jonah Bray
  */
-public class AnnouncementDialogue implements Dialogue {
+public class AnnounceDialogue implements Dialogue {
     protected final Question<java.awt.Color> embedColor;
     protected final Question<String> authorString;
     protected final Question<String> titleString;
@@ -22,7 +22,7 @@ public class AnnouncementDialogue implements Dialogue {
     protected final String cancelWord;
     protected int questionID;
 
-    public AnnouncementDialogue(final String userID) {
+    public AnnounceDialogue(final String userID) {
         embedColor = new Question<>(colorQuestionEvent -> {
             colorQuestionEvent.getQuestion().setAnswer(Color.color(colorQuestionEvent.getValue()));
             colorQuestionEvent.getEvent().getChannel().sendMessage(
@@ -141,14 +141,13 @@ public class AnnouncementDialogue implements Dialogue {
 
     public void sendAnnouncement() {
         User user = VectorBot.getJda().getUserById(userID);
-        MessageEmbed embed = new EmbedBuilder()
+        getChannelString().sendMessage(new EmbedBuilder()
                 .setTitle(getTitleString())
                 .setColor(getEmbedColor())
                 .setDescription(getDescriptionString())
                 .setAuthor(getAuthorString(), VectorBot.getBotConfig().getConfiguration().discordInvite,
                         VectorBot.getJda().getSelfUser().getEffectiveAvatarUrl())
                 .setFooter(user != null ? "Sent by " + user.getName() + "#" + user.getDiscriminator() : "VectorBot")
-                .build();
-        getChannelString().sendMessage(embed).queue();
+                .build()).queue();
     }
 }

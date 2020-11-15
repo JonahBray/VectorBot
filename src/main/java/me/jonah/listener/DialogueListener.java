@@ -21,7 +21,7 @@ public class DialogueListener extends ListenerAdapter {
             Dialogue dialogue = VectorBot.getDialogueManager().getUserDialogueMap().get(event.getAuthor().getId());
             if (dialogue != null) {
                 // Map has a dialogue of this user.
-                if (dialogue.getCancelWord().equals(dialogue.getCancelWord())) {
+                if (dialogue.getCancelWord().equals(event.getMessage().getContentStripped())) {
                     VectorBot.getDialogueManager().getUserDialogueMap().remove(event.getAuthor().getId());
                     event.getChannel().sendMessage("Cancelled action.").queue();
                     return;

@@ -4,17 +4,20 @@ import com.google.gson.Gson;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import me.jonah.commands.admin.*;
+import me.jonah.commands.admin.announce.AnnounceCommand;
 import me.jonah.configuration.BotSettings;
 import me.jonah.dialogue.DialogueManager;
 import me.jonah.lib.config.Config;
 import me.jonah.lib.config.ConfigManager;
 import me.jonah.listener.DialogueListener;
 import me.jonah.listener.JoinListener;
+import me.jonah.reactrole.ReactionRoleManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import javax.security.auth.login.LoginException;
 import java.util.Scanner;
@@ -28,6 +31,11 @@ public class VectorBot {
     private static ConfigManager configManager;
     private static Config<BotSettings> botConfig;
     private static DialogueManager dialogueManager;
+    private static ReactionRoleManager reactionRoleManager;
+
+    public static ReactionRoleManager getReactionRoleManager() {
+        return reactionRoleManager;
+    }
 
     public static Gson getGson() {
         return gson;
@@ -68,8 +76,9 @@ public class VectorBot {
                 // We try again.
                 jda = JDABuilder.createDefault(args[0])
                         .setAutoReconnect(true)
-                        .setMemberCachePolicy(MemberCachePolicy.ONLINE)
+                        .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .enableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MEMBERS)
+                        .enableCache(CacheFlag.EMOTE)
                         .addEventListeners(builder.build())
                         .addEventListeners(new JoinListener(),
                                 new DialogueListener())
@@ -87,6 +96,10 @@ public class VectorBot {
         }
         // We save config here because we know the token is correct if it was ever null.
         botConfig.saveConfig();
+        jda.awaitReady();
+
+        reactionRoleManager = new ReactionRoleManager();
+        jda.addEventListener(reactionRoleManager);
     }
 
     public static JDA getJda() {
@@ -120,6 +133,7 @@ public class VectorBot {
                 new PingCommand(admin),
                 new AnnounceCommand(admin),
                 new ReloadCommand(admin),
+                new ReactCommand(admin),
                 new ShutdownCommand(admin));
 
     }

@@ -1,9 +1,8 @@
-package me.jonah.commands.admin;
+package me.jonah.commands.admin.announce;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import me.jonah.VectorBot;
-import me.jonah.dialogue.types.AnnouncementDialogue;
 
 /**
  * @author Jonah Bray
@@ -19,7 +18,7 @@ public class AnnounceCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         if (event.getGuild().getId().equals(VectorBot.getBotConfig().getConfiguration().guildID)) {
-            AnnouncementDialogue dialogue = new AnnouncementDialogue(event.getMember().getUser().getId());
+            AnnounceDialogue dialogue = new AnnounceDialogue(event.getMember().getUser().getId());
             VectorBot.getDialogueManager().addDialogue(dialogue);
             event.reply(dialogue.getNextQuestion());
 
